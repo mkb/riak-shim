@@ -3,10 +3,10 @@ require File.expand_path('../lib/riak-shim/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Michael Brodhead & Shai Rosenfeld"]
-  gem.email         = ["mbrodhead@engineyard.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.email         = ["mkb@engineyard.com"]
+  gem.description   = %q{Riak shim for bucket names and config.}
+  gem.summary       = %q{A tiny shim between you and riak-client. Reads config/database.yml and generates sensible bucket names.}
+  gem.homepage      = "https://github.com/mkb/riak-shim"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
