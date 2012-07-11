@@ -3,6 +3,11 @@ module Riak
 
     module Persistable
       attr_writer :store
+      attr_accessor :key
+
+      def key
+        @key ||= gen_key
+      end
 
       def bucket
         return self.class.store.bucket(bucket_name)
