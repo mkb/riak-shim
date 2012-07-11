@@ -1,0 +1,9 @@
+development: &default
+  bucket_prefix: dev_
+  host: localhost
+  http_port: 8098
+
+test:
+  <<: *default
+  bucket_prefix: test_
+
