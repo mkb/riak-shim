@@ -50,11 +50,11 @@ module Riak
         end
 
         def bucket_name
-          myclass = de_cammel(self.to_s)
+          myclass = de_camel(self.to_s)
           "#{store.bucket_prefix}#{myclass}"
         end
 
-        def de_cammel(classname)
+        def de_camel(classname)
           classname.gsub(/::/, '__').
             gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
             gsub(/([a-z\d])([A-Z])/,'\1_\2').
@@ -66,9 +66,15 @@ module Riak
           return store.bucket(bucket_name)
         end
 
+        def for_key(key)
+          raw = bucket.get(key)
+          data = raw.data
+          from_hash(data)
+        end
+
         def for_index(index, value)
           bucket.get_index(index, value).map do |key|
-            from_hash(key)
+            for_key(key)
           end
         end
 
