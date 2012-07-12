@@ -50,8 +50,16 @@ module Riak
         end
 
         def bucket_name
-          myclass = self.to_s.underscore
+          myclass = de_cammel(self.to_s)
           "#{store.bucket_prefix}#{myclass}"
+        end
+
+        def de_cammel(classname)
+          classname.gsub(/::/, '__').
+            gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+            gsub(/([a-z\d])([A-Z])/,'\1_\2').
+            tr("-", "_").
+            downcase
         end
 
         def bucket
