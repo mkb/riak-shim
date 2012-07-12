@@ -40,6 +40,10 @@ In any class you wish to persist:
     # Return hashified version of your class
   end
 
+  def self.from_hash(key)
+    # Return a fresh instance of your class populated by the hash provided
+  end
+
   def fields_to_index
     # Return an Array of hash keys you would like placed into a secondary index.
     # Return an empty Array if you don't know what this means.  :)
@@ -65,4 +69,7 @@ Return value is an Array of instances of your class matching the query.
 
 ## TODOS
 
-- Implement a #for_key lookup method.
+- #from_hash does not work as advertised
+- Implement a #for_key lookup method
+- Examples directory
+- Revisit tests

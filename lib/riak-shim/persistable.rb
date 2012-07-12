@@ -6,7 +6,7 @@ module Riak
       attr_accessor :key
 
       def key
-        @key ||= gen_key
+        @key ||= self.class.gen_key
       end
 
       def bucket
