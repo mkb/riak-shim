@@ -67,9 +67,13 @@ module Riak
         end
 
         def for_key(key)
-          raw = bucket.get(key)
-          data = raw.data
-          from_hash(data)
+          begin
+            raw = bucket.get(key)
+            data = raw.data
+            from_hash(data)
+          rescue Riak::HTTPFailedRequest
+            return nil
+          end
         end
 
         def for_index(index, value)
