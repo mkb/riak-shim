@@ -6,7 +6,7 @@ appropriate prefix.
 
 Riak is a database from the good people at Basho.  Check it out:  http://basho.com/products/riak-overview/
 
-[![Build Status](https://secure.travis-ci.org/mkb/riak-shim.png?branch=master)](http://travis-ci.org/mkb/riak-shim) [![Dependency Status](https://gemnasium.com/mkb/riak-shim.png)](https://gemnasium.com/mkb/riak-shim)
+[![Build Status](https://secure.travis-ci.org/mkb/riak-shim.png?branch=master)](http://travis-ci.org/mkb/riak-shim) [![Dependency Status](https://gemnasium.com/mkb/riak-shim.png)](https://gemnasium.com/mkb/riak-shim) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/mkb/riak-shim)
 
 ## Installation
 
@@ -72,13 +72,13 @@ them from Riak by calling...
 ### Secondary indexes
 
 Secondary indexes in Riak allow you to query based on the contents of a
-particular field.  Define YourClass#fields_to_index and return the names of
+particular field.  If you'd like to look up your data by the contents
+of fields, define `#fields_to_index` and return the names of
 any fields you wish to query on.  When you #save an instance of YourClass,
 riak-shim will populate a secondary index for that field.
 
     def fields_to_index
       # Return an Array of hash keys you would like placed into a secondary index.
-      # Return an empty Array if you don't know what this means. :)
     end
 
 The `for_index` method retrieves all records whose value for the given index
