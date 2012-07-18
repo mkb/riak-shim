@@ -3,10 +3,9 @@ require 'uuidtools'
 
 module Riak
   module Shim
-
     class Store
       attr_writer :config_location
-      attr_reader :riak
+      attr_writer :riak
 
       def config
         env = ENV['RACK_ENV'] || 'test'
@@ -24,7 +23,7 @@ module Riak
       def bucket_prefix
         return config['bucket_prefix']
       end
-      
+
       def riak
         @riak ||= Riak::Client.new(:http_backend => :Excon,
             :nodes => [{:host => config['host'], :http_port => config['http_port']}])
@@ -34,6 +33,5 @@ module Riak
         riak.bucket(name)
       end
     end
-
   end
 end

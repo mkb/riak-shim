@@ -1,6 +1,5 @@
 module Riak
   module Shim
-
     module Persistable
       attr_writer :store
       attr_accessor :key
