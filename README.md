@@ -1,4 +1,4 @@
-# Riak::Shim
+# Riak Shim
 
 A teeny shim between your code and the riak-client gem.  Reads database configuration
 out of config/database.yml and derives bucket names from your class names and an
@@ -6,8 +6,7 @@ appropriate prefix.
 
 Riak is a database from the good people at Basho.  Check it out:  http://basho.com/products/riak-overview/
 
-[![Build Status](https://secure.travis-ci.org/mkb/riak-shim.png?branch=master)](http://travis-ci.org/mkb/riak-shim)
-
+[![Build Status](https://secure.travis-ci.org/mkb/riak-shim.png?branch=master)](http://travis-ci.org/mkb/riak-shim) [![Dependency Status](https://gemnasium.com/mkb/riak-shim.png)](https://gemnasium.com/mkb/riak-shim)
 
 ## Installation
 
