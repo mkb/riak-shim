@@ -24,16 +24,21 @@ Or install it yourself as:
 
 ## Usage
 
-Create a config/database.yml containing the details of your Riak like so:
+Create a config/database.yml containing the details of your Riak setup like so:
 
     development: &default
-      bucket_prefix: dev_
+      bucket_prefix: myapp_dev_
       host: localhost
       http_port: 8098
 
     test:
       <<: *default
-      bucket_prefix: test_
+      bucket_prefix: myapp_test_
+
+`bucket_prefix will be prefixed to each bucket name, allowing you to point
+`multiple applications (or multiple copies of the same application) at a
+`single Riak install. During development, this prevents you from stepping on
+`your own toes.
 
 ## Converting a model to use Riak
 
@@ -42,14 +47,15 @@ In any class you wish to persist, you must include the module:
     require 'riak-shim'
     include Riak::Shim::Persistable
 
-Then, write a #to_hash method which returns a hash representing your object (and consequently, what you are
-going to store):
+Then, write a #to_hash method which returns a hash representing your object
+(and consequently, what you are going to store):
 
     def to_hash
       # Return hashified version of your class
     end
 
-You'll use Class#from_hash to create an instance from the hash which was pulled from Riak:
+You'll use Class#from_hash to create an instance from the hash which was
+pulled from Riak:
 
     def self.from_hash(data)
       your_obj = new
@@ -58,28 +64,30 @@ You'll use Class#from_hash to create an instance from the hash which was pulled 
       return your_obj
     end
 
-You can now save instances of yoru class by calling #save and later retrieve them from Riak
-by calling...
+You can now save instances of your class by calling #save and later retrieve
+them from Riak by calling...
 
     YourClass.for_key(key)
 
 ### Secondary indexes
 
-Secondary indexes in Riak allow you to query based on the contents of a particular field.  Define
-YourClass#fields_to_index and return the names of any fields you wish to query on.  When you #save
-an instance of YourClass, riak-shim will populate a secondary index for that field.
+Secondary indexes in Riak allow you to query based on the contents of a
+particular field.  Define YourClass#fields_to_index and return the names of
+any fields you wish to query on.  When you #save an instance of YourClass,
+riak-shim will populate a secondary index for that field.
 
     def fields_to_index
       # Return an Array of hash keys you would like placed into a secondary index.
       # Return an empty Array if you don't know what this means. :)
     end
 
-You can now retrieve records based on the content of those fields by calling...
-The `for_index` method retrieves all records whose value for the given index matches.
+The `for_index` method retrieves all records whose value for the given index
+matches:
 
     YourClass.for_index(index_name, value)
 
-Where `index_name` is what you defined in `fields_to_index` plus the suffix "_bin" .
+...where `index_name` is what you defined in `fields_to_index` plus the suffix
+"_bin" .
 
 The `value` is what you want to look up.
 
