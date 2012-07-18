@@ -99,3 +99,5 @@ Return value is an Array of instances of your class matching the query.
 
 - Examples directory
 - Revisit tests
+- find less horrible way to deal with index names
+

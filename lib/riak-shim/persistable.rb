@@ -30,10 +30,12 @@ module Riak
 
       def set_indexes(indexes)
         indexes.clear
-        fields_to_index.each do |field|
-          index_name = "#{field}_bin"
-          index_value = send(field)
-          indexes[index_name] << index_value
+        if self.respond_to?(:fields_to_index)
+          fields_to_index.each do |field|
+            index_name = "#{field}_bin"
+            index_value = send(field)
+            indexes[index_name] << index_value
+          end
         end
       end
 
