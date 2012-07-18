@@ -6,6 +6,9 @@ appropriate prefix.
 
 Riak is a database from the good people at Basho.  Check it out:  http://basho.com/products/riak-overview/
 
+[![Build Status](https://secure.travis-ci.org/mkb/riak-shim.png?branch=master)](http://travis-ci.org/mkb/riak-shim)
+
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -96,4 +99,3 @@ Return value is an Array of instances of your class matching the query.
 
 - Examples directory
 - Revisit tests
-- travis, multiple rubies
