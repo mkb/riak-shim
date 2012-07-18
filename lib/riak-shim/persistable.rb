@@ -2,7 +2,7 @@ module Riak
   module Shim
     module Persistable
       attr_writer :store
-      attr_accessor :key
+      attr_writer :key
 
       def key
         @key ||= self.class.gen_key

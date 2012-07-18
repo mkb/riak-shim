@@ -15,8 +15,9 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Riak::Shim::VERSION
 
-  gem.add_dependency 'riak-client'
-  gem.add_dependency 'uuidtools'
+  gem.add_dependency 'riak-client', '~>1.0.4'
+  gem.add_dependency 'excon'
+  gem.add_dependency 'uuidtools', '~>2.1.2'
 
   gem.add_development_dependency "rake"
   gem.add_development_dependency "rspec"
