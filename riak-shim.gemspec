@@ -2,14 +2,14 @@
 require File.expand_path('../lib/riak-shim/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Michael Brodhead & Shai Rosenfeld"]
+  gem.authors       = ["Michael Brodhead, Shai Rosenfeld, and Larry Diehl"]
   gem.email         = ["mkb@engineyard.com"]
-  gem.description   = %q{Riak shim for bucket names and config.}
+  gem.description   = %q{Riak shim for bucket naming and config.}
   gem.summary       = %q{A tiny shim between you and riak-client. Reads config/database.yml and generates sensible bucket names.}
   gem.homepage      = "https://github.com/mkb/riak-shim"
 
   gem.files         = `git ls-files`.split($\)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.files.reject!   {|f| f =~ %r{^vendor}}
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "riak-shim"
   gem.require_paths = ["lib"]
