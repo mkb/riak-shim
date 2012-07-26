@@ -4,13 +4,31 @@ require 'riak-shim/persistable'
 class PersistableExample
   include Riak::Shim::Persistable
   attr_accessor :foo, :bar, :baz
+
+  def to_hash
+    { 'foo' => foo, 'bar' => bar, 'baz' => baz }
+  end
+
+  def self.from_hash(data)
+    result = self.new
+    result.foo = data['foo']
+    result.bar = data['bar']
+    result.baz = data['baz']
+    result
+  end
 end
 
 describe 'persistable' do
-  let(:persistable) { PersistableExample.new }
+  let(:persistable) do
+    p = PersistableExample.new ; p.foo = 'boo' ; p.bar = 'who' ; p
+  end
 
   before do
     Riak::Shim::Store.any_instance.stub(:read_config).and_return(DB_CONFIG)
+  end
+
+  after do
+    PersistableExample.delete_all
   end
 
   describe '#bucket_name' do
@@ -32,6 +50,28 @@ describe 'persistable' do
   end
 
   describe '#save' do
+    it 'increases key count' do
+      expect do
+        persistable.save
+      end.to change{ persistable.bucket.keys.count }.by(1)
+    end
+
+    it 'can then be retrieved' do
+      persistable.save
+      retrieved = PersistableExample.for_key(persistable.key)
+      retrieved.should_not be_nil
+    end
+  end
+
+  describe '#destroy' do
+    before do
+      persistable.save
+      persistable.destroy
+    end
+
+    it 'removes the key' do
+      persistable.bucket.exists?(persistable.key).should be_false
+    end
   end
 
   describe '#set_indexes' do

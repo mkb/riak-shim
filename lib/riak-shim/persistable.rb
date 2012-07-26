@@ -28,6 +28,10 @@ module Riak
         self
       end
 
+      def destroy
+        bucket.delete(key)
+      end
+
       def set_indexes(indexes)
         indexes.clear
         if self.respond_to?(:fields_to_index)
