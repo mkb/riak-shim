@@ -25,6 +25,23 @@ describe Riak::Shim::Store do
       end
     end
 
+    describe 'default config' do
+      context 'with RACK_ENV not explicitly configured in database.yml' do
+        before do
+          @stashed_rack_env = ENV['RACK_ENV']
+          ENV['RACK_ENV'] = 'production'
+        end
+
+        after do
+          ENV['RACK_ENV'] = @stashed_rack_env
+        end
+
+        it "says prefix is test_" do
+          store.config['http_port'].should == 8098
+        end
+      end
+    end
+
     describe '#config' do
       context 'with RACK_ENV=test' do
         before do
