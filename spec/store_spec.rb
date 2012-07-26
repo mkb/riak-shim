@@ -25,19 +25,32 @@ describe Riak::Shim::Store do
       end
     end
 
-    describe 'default config' do
-      context 'with RACK_ENV not explicitly configured in database.yml' do
+    describe 'error handling' do
+      before do
+        @stashed_rack_env = ENV['RACK_ENV']
+      end
+
+      after do
+        ENV['RACK_ENV'] = @stashed_rack_env
+      end
+
+      context 'with current RACK_ENV not explicitly configured in database.yml' do
         before do
-          @stashed_rack_env = ENV['RACK_ENV']
           ENV['RACK_ENV'] = 'production'
         end
 
-        after do
-          ENV['RACK_ENV'] = @stashed_rack_env
+        it "raises an error" do
+          expect { store.config }.to raise_error(Riak::Shim::Store::NoSettingsForCurrentEnvError)
+        end
+      end
+
+      context 'with no RACK_ENV set' do
+        before do
+          ENV['RACK_ENV'] = nil
         end
 
-        it "says prefix is test_" do
-          store.config['http_port'].should == 8098
+        it "raises an error" do
+          expect { store.config }.to raise_error(Riak::Shim::Store::RackEnvNotSetError)
         end
       end
     end
