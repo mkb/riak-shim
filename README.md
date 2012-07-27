@@ -35,10 +35,10 @@ Create a config/database.yml containing the details of your Riak setup like so:
       <<: *default
       bucket_prefix: myapp_test_
 
-`bucket_prefix will be prefixed to each bucket name, allowing you to point
-`multiple applications (or multiple copies of the same application) at a
-`single Riak install. During development, this prevents you from stepping on
-`your own toes.
+`bucket_prefix` will be prefixed to each bucket name, allowing you to point
+multiple applications (or multiple copies of the same application) at a
+single Riak install. During development, this prevents you from stepping on
+your own toes.
 
 ## Converting a model to use Riak
 
@@ -52,22 +52,25 @@ Then, write a #to_hash method which returns a hash representing your object
 
     def to_hash
       # Return hashified version of your class
+      { 'foo' => self.foo, 'bar' => self.bar }
     end
 
 You'll use Class#from_hash to create an instance from the hash which was
 pulled from Riak:
 
     def self.from_hash(data)
+      # Return a fresh instance of your class populated by the hash provided
       your_obj = new
       your_obj.foo = data['foo']
-      # Return a fresh instance of your class populated by the hash provided
+      your_obj.bar = data['bar']
       return your_obj
     end
 
-You can now save instances of your class by calling #save and later retrieve
-them from Riak by calling...
+You can now save instances of your class by calling `#save` and later retrieve
+them from Riak by calling `.for_key`:
 
-    YourClass.for_key(key)
+    an_instance.save
+    retrieved_copy = YourClass.for_key(key)
 
 ### Secondary indexes
 
@@ -79,6 +82,7 @@ riak-shim will populate a secondary index for that field.
 
     def fields_to_index
       # Return an Array of hash keys you would like placed into a secondary index.
+      [foo]
     end
 
 The `for_index` method retrieves all records whose value for the given index
@@ -105,6 +109,6 @@ Return value is an Array of instances of your class matching the query.
 ## TODOS
 
 - Examples directory
-- Revisit tests
+- Keep expanding tests
 - find less horrible way to deal with index names
 
