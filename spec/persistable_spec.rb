@@ -27,6 +27,12 @@ class PersistableExample
   end
 end
 
+class PersistableExampleWithIndex < PersistableExample
+  def fields_to_index
+    [:bar, :baz]
+  end
+end
+
 describe 'persistable' do
   let(:persistable) do
     p = PersistableExample.new ; p.foo = 'boo' ; p.bar = 'who' ; p
@@ -102,12 +108,6 @@ describe 'persistable' do
     end
 
     context 'with a model which needs indexes' do
-      class PersistableExampleWithIndex < PersistableExample
-        def fields_to_index
-          [:bar, :baz]
-        end
-      end
-
       let(:indexable) { PersistableExampleWithIndex.new }
       before do
         indexable.foo = 1
@@ -175,10 +175,39 @@ describe 'persistable' do
   end
 
   describe '#for_index' do
+    before do
+      @indexed = []
+      3.times do |i|
+        indexable = PersistableExampleWithIndex.new
+        indexable.foo = i
+        indexable.bar = 'wombat'
+        indexable.save
+        @indexed << indexable
+      end
+    end
+
+    after do
+      PersistableExampleWithIndex.delete_all
+    end
+
+    it 'returns all items which match indexed value' do
+      PersistableExampleWithIndex.for_index('bar_bin', 'wombat').should =~ @indexed
+    end
+
+    it 'returns an empty list when no matches are found' do
+      PersistableExampleWithIndex.for_index('bar_bin', 'chew').should be_empty
+    end
   end
 
   describe '#gen_key' do
-    it 'produces no duplicates when called a bunch of times'
+    before do
+      @keys = []
+      20.times { @keys << PersistableExample.gen_key }
+    end
+
+    it 'produces no duplicates when called a bunch of times' do
+      @keys.uniq!.should be_nil
+    end
   end
 end
 
