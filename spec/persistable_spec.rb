@@ -17,6 +17,14 @@ class PersistableExample
     result.baz = data['baz']
     result
   end
+
+  def ==(other)
+    other.instance_of?(self.class) and
+        self.key == other.key and
+        self.foo == other.foo and
+        self.bar == other.bar and
+        self.baz == other.baz
+  end
 end
 
 describe 'persistable' do
@@ -61,7 +69,7 @@ describe 'persistable' do
     it 'can then be retrieved' do
       persistable.save
       retrieved = PersistableExample.for_key(persistable.key)
-      retrieved.should_not be_nil
+      retrieved.should eq persistable
     end
   end
 
@@ -156,8 +164,14 @@ describe 'persistable' do
   end
 
   describe '#for_key' do
-    it 'fetches items for keys which exist'
-    it 'returns null when the key does not exist'
+    it 'fetches items for keys which exist' do
+      persistable.save
+      PersistableExample.for_key(persistable.key).should eq persistable
+    end
+
+    it 'returns null when the key does not exist' do
+      PersistableExample.for_key('no such key').should be_nil
+    end
   end
 
   describe '#for_index' do

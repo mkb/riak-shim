@@ -75,7 +75,9 @@ module Riak
           begin
             raw = bucket.get(key)
             data = raw.data
-            from_hash(data)
+            result = from_hash(data)
+            result.key = key
+            result
           rescue Riak::HTTPFailedRequest
             return nil
           end
