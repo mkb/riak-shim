@@ -1,7 +1,6 @@
 $: << './lib'
 require 'riak-shim'
 require 'pry'
-require 'awesome_print'
 
 ENV['RACK_ENV'] = 'test' unless ENV['RACK_ENV']
 DB_CONFIG = { 'development' => { 'bucket_prefix' => 'dev_', 'host' => "localhost", 'http_port' => 8098},
