@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'riak-shim/persistable'
+require 'support/camelcase'
 
 class PersistableExample
   include Riak::Shim::Persistable
@@ -22,6 +23,7 @@ describe 'persistable' do
   let(:persistable) do
     p = PersistableExample.new ; p.foo = 'boo' ; p.bar = 'who' ; p
   end
+  let(:bucket) { PersistableExample.bucket }
 
   before do
     Riak::Shim::Store.any_instance.stub(:read_config).and_return(DB_CONFIG)
@@ -39,7 +41,7 @@ describe 'persistable' do
 
   describe '#bucket' do
     it 'returns the correct bucket' do
-      persistable.bucket.name.should == 'test_persistable_example'
+      bucket.name.should == 'test_persistable_example'
     end
   end
 
@@ -53,7 +55,7 @@ describe 'persistable' do
     it 'increases key count' do
       expect do
         persistable.save
-      end.to change{ persistable.bucket.keys.count }.by(1)
+      end.to change{ bucket.keys.count }.by(1)
     end
 
     it 'can then be retrieved' do
@@ -70,7 +72,7 @@ describe 'persistable' do
     end
 
     it 'removes the key' do
-      persistable.bucket.exists?(persistable.key).should be_false
+      bucket.exists?(persistable.key).should be_false
     end
   end
 
@@ -113,9 +115,44 @@ describe 'persistable' do
   end
 
   describe '#delete_all' do
+    before do
+      10.times do |i|
+        p = PersistableExample.new
+        p.foo, p.bar, p.baz = i, i, i
+        p.save
+      end
+      @keys = bucket.keys
+      PersistableExample.delete_all
+    end
+
+    it 'has no instances in the DB' do
+      @keys.map { |k| bucket.exists?(k).should be_false }
+    end
   end
 
   describe '#de_camel' do
+    it 'handles a bacic camel-case name' do
+      DeCamel.each do |camelcase, lowered|
+        PersistableExample.de_camel(camelcase).should eq(lowered)
+      end
+    end
+
+    it 'handles runs of capitals appropriately' do
+      DeCamelCapsRuns.each do |camelcase, lowered|
+        PersistableExample.de_camel(camelcase).should eq(lowered)
+      end
+    end
+
+    it 'turns module separators into slashes' do
+      DeCamelWithModule.each do |camelcase, lowered|
+        PersistableExample.de_camel(camelcase).should eq(lowered)
+      end
+    end
+
+    it 'does not produce collisions' do
+      PersistableExample.de_camel('RiakShim').should_not
+          eq PersistableExample.de_camel('Riak::Shim')
+    end
   end
 
   describe '#for_key' do
