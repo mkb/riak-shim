@@ -96,7 +96,7 @@ describe 'persistable' do
       @indexes[:oldkey] = ['oldval']
     end
 
-    context 'with a model which does not need indes' do
+    context 'with a model which does not need indexes' do
       it 'does not require #fields_to_index to be defined' do
         expect { persistable.set_indexes(@indexes) }.to_not raise_error
       end
