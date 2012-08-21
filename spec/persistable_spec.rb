@@ -20,16 +20,24 @@ class PersistableExample
 
   def ==(other)
     other.instance_of?(self.class) and
-        self.key == other.key and
-        self.foo == other.foo and
-        self.bar == other.bar and
-        self.baz == other.baz
+    self.key == other.key and
+    self.foo == other.foo and
+    self.bar == other.bar and
+    self.baz == other.baz
   end
 end
 
 class PersistableExampleWithIndex < PersistableExample
   def fields_to_index
     [:bar, :baz]
+  end
+end
+
+def create_test_data(copies)
+  copies.times do |i|
+    p = PersistableExample.new
+    p.foo, p.bar, p.baz = i, i, i
+    p.save
   end
 end
 
@@ -116,6 +124,10 @@ describe 'persistable' do
         indexable.set_indexes(@indexes)
       end
 
+      after do
+        PersistableExampleWithIndex.delete_all
+      end
+
       it 'sets indexes for specified fields and no others' do
         @indexes.keys.should =~ ['bar_bin', 'baz_bin']
       end
@@ -124,22 +136,18 @@ describe 'persistable' do
 
   describe '#delete_all' do
     before do
-      10.times do |i|
-        p = PersistableExample.new
-        p.foo, p.bar, p.baz = i, i, i
-        p.save
-      end
-      @keys = bucket.keys
+      create_test_data(10)
       PersistableExample.delete_all
+      sleep(5)
     end
 
     it 'has no instances in the DB' do
-      @keys.map { |k| bucket.exists?(k).should be_false }
+      PersistableExample.bucket.keys.count.should eq 0
     end
   end
 
   describe '#de_camel' do
-    it 'handles a bacic camel-case name' do
+    it 'handles a basic camel-case name' do
       DeCamel.each do |camelcase, lowered|
         PersistableExample.de_camel(camelcase).should eq(lowered)
       end
@@ -158,8 +166,7 @@ describe 'persistable' do
     end
 
     it 'does not produce collisions' do
-      PersistableExample.de_camel('RiakShim').should_not
-          eq PersistableExample.de_camel('Riak::Shim')
+      PersistableExample.de_camel('RiakShim').should_not eq PersistableExample.de_camel('Riak::Shim')
     end
   end
 
@@ -209,5 +216,18 @@ describe 'persistable' do
       @keys.uniq!.should be_nil
     end
   end
-end
 
+  describe '#count' do
+    COUNT = 50
+
+    before do
+      PersistableExample.delete_all
+      sleep(5)
+      create_test_data(COUNT)
+    end
+
+    it 'returns an accurate count' do
+      PersistableExample.count.should eq COUNT
+    end
+  end
+end

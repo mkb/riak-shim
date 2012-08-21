@@ -45,7 +45,7 @@ module Riak
       module ClassMethods
         def delete_all
           bucket.keys.each do |key|
-            bucket.delete key
+            bucket.delete(key)
           end
         end
 
@@ -90,6 +90,12 @@ module Riak
 
         def gen_key
           UUIDTools::UUID.random_create.to_s
+        end
+
+        def count
+          counter = 0
+          bucket.keys {|keys| counter += keys.count }
+          return counter
         end
       end
 
