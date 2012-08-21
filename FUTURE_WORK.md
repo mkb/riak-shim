@@ -15,6 +15,7 @@ a while.
 
 ## TODOS
 
+- YARD
 - Examples directory
 - Keep working on docs
 - Keep expanding tests
