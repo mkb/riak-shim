@@ -100,15 +100,13 @@ Return value is an Array of instances of your class matching the query.
 
 ## Contributing
 
+For a look at what work is needed (at least according to me), see
+[FUTURE_WORK.md](https://github.com/mkb/riak-shim/blob/master/FUTURE_WORK.md)
+
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-## TODOS
-
-- Examples directory
-- Keep expanding tests
-- find less horrible way to deal with index names
 
