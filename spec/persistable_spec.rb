@@ -106,11 +106,11 @@ describe 'persistable' do
 
     context 'with a model which does not need indexes' do
       it 'does not require #fields_to_index to be defined' do
-        expect { persistable.set_indexes(@indexes) }.to_not raise_error
+        expect { persistable.send(:set_indexes, @indexes) }.to_not raise_error
       end
 
       it 'clears preexisting indexes' do
-        persistable.set_indexes(@indexes)
+        persistable.send(:set_indexes, @indexes)
         @indexes.should be_empty
       end
     end
@@ -121,7 +121,7 @@ describe 'persistable' do
         indexable.foo = 1
         indexable.bar = 2
         indexable.baz = 3
-        indexable.set_indexes(@indexes)
+        indexable.send(:set_indexes, @indexes)
       end
 
       after do
@@ -147,26 +147,30 @@ describe 'persistable' do
   end
 
   describe '#de_camel' do
+    def de_camel(camelcase)
+      PersistableExample.send(:de_camel, camelcase)
+    end
+
     it 'handles a basic camel-case name' do
       DeCamel.each do |camelcase, lowered|
-        PersistableExample.de_camel(camelcase).should eq(lowered)
+        de_camel(camelcase).should eq(lowered)
       end
     end
 
     it 'handles runs of capitals appropriately' do
       DeCamelCapsRuns.each do |camelcase, lowered|
-        PersistableExample.de_camel(camelcase).should eq(lowered)
+        de_camel(camelcase).should eq(lowered)
       end
     end
 
     it 'turns module separators into slashes' do
       DeCamelWithModule.each do |camelcase, lowered|
-        PersistableExample.de_camel(camelcase).should eq(lowered)
+        de_camel(camelcase).should eq(lowered)
       end
     end
 
     it 'does not produce collisions' do
-      PersistableExample.de_camel('RiakShim').should_not eq PersistableExample.de_camel('Riak::Shim')
+      de_camel('RiakShim').should_not eq de_camel('Riak::Shim')
     end
   end
 
