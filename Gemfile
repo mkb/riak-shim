@@ -8,5 +8,7 @@ end
 
 platforms :mri_19 do
   gem 'guard-yard'
+  gem 'yard'
+  gem 'redcarpet'
 end
 
