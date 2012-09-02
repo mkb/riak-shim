@@ -6,3 +6,7 @@ platforms :jruby do
   gem 'json-jruby'
 end
 
+platforms :mri_19 do
+  gem 'guard-yard'
+end
+
