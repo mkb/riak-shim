@@ -1,0 +1,6 @@
+guard 'yard', :port => '8088' do
+  watch(%r{lib/.+\.rb})
+  watch(%r{README.md})
+  watch(%r{FUTURE_WORK.md})
+  watch(%r{LICENSE})
+end

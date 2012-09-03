@@ -21,13 +21,9 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
+
   gem.add_development_dependency 'guard'
   gem.add_development_dependency 'guard-rspec'
   gem.add_development_dependency 'pry'
   gem.add_development_dependency 'awesome_print'
-
-  if RUBY_PLATFORM.include? 'darwin'
-    gem.add_development_dependency 'growl'
-    gem.add_development_dependency 'rb-fsevent'
-  end
 end
