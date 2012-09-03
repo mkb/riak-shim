@@ -1,7 +1,9 @@
 
-# Provides basic persistence features
 module Riak
   module Shim
+
+    # Provides basic persistence features
+    # @attr [String] the unique key for storing the object in Riak
     module Persistable
       attr_writer :key
 
@@ -20,12 +22,13 @@ module Riak
         self.class.bucket_name
       end
 
-      # @return [Riak::Shim::Store] the Store you are connected to
+      # @return [Riak::Shim::Store] the Riak cluster you are connected to
       def store
         self.class.store
       end
 
       # Persist this object into Riak
+      # @return [Persistable] self
       def save
         doc = bucket.get_or_new(key)
         doc.data = to_hash
@@ -35,14 +38,17 @@ module Riak
       end
 
       # Remove this object from Riak
+      # @return [Persistable] self
       def destroy
         bucket.delete(key)
+        self
       end
 
       module ClassMethods
-        # Remove all instances of this class from Riak.
+        # *WARNING:* This is very slow and is intended only for your tests,
+        # not for production use.
         #
-        # *WARNING:* This is very slow and is intended only for your tests, not for production use.
+        # Remove all instances of this class from Riak.
         def delete_all
           bucket.keys.each do |key|
             bucket.delete(key)
@@ -54,7 +60,8 @@ module Riak
           @store ||= Store.new
         end
 
-        # @return [String] name of the Riak bucket generated from the class name and your configuration
+        # @return [String] name of the Riak bucket generated from the class
+        #   name and your configuration
         def bucket_name
           myclass = de_camel(self.to_s)
           "#{store.bucket_prefix}#{myclass}"
@@ -65,6 +72,8 @@ module Riak
           return store.bucket(bucket_name)
         end
 
+        # Look up an instance of your class
+        # @return [Persistable, #nil] an instance corresponding to key
         def for_key(key)
           begin
             raw = bucket.get(key)
@@ -77,7 +86,11 @@ module Riak
           end
         end
 
-        # @return [Array] any instances of your class whose indexed field matches value
+        # @return [Array<Persistable>] any instances of your class whose
+        #   indexed field matches value
+        #
+        # Locate instances by secondary index.
+        #
         # *NOTE:* This interface is ugly as sin, so expect it to change in a future release.
         def for_index(index, value)
           bucket.get_index(index, value).map do |key|
@@ -90,10 +103,14 @@ module Riak
           UUIDTools::UUID.random_create.to_s
         end
 
-
-        # @return [Integer] the number of instances of your class stored in Riak
+        # @return [Integer] the number of instances of your class stored in
+        #   Riak
         #
-        # *WARNING:* This is very slow and is intended only for your tests, not for production use.
+        # *WARNING:* This is very slow and is intended only for your tests,
+        # not for production use.
+        #
+        # Counts instances in the database which really means items in the
+        # bucket.
         def count
           counter = 0
           bucket.keys {|keys| counter += keys.count }
@@ -126,8 +143,6 @@ module Riak
           end
         end
       end
-
-
     end
   end
 end

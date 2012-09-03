@@ -3,14 +3,13 @@ require 'uuidtools'
 
 module Riak
   module Shim
-    # Represents a connection to a particular Riak instance
+
+    # Represents a connection to a particular Riak cluster
+    # @attr [String] config_location The path to our configuration file.  Defaults to DEFAULT_CONFIG_LOCATION
+    # @attr [Riak::Client] riak The underlying Riak connection
     class Store
 
-      # The path to our configuration file.  Defaults to DEFAULT_CONFIG_LOCATION
       attr_writer :config_location
-
-      # @!attribute [w]
-      # [Riak::Client] the underlying Riak connection
       attr_writer :riak
 
       DEFAULT_CONFIG_LOCATION = 'config/database.yml'
@@ -39,7 +38,7 @@ module Riak
         @config_location ||= DEFAULT_CONFIG_LOCATION
       end
 
-      # @return [String] the prifix we will add to the bucket name for each class
+      # @return [String] the prefix we will add to the bucket name for each class
       def bucket_prefix
         return config['bucket_prefix']
       end
@@ -49,7 +48,7 @@ module Riak
             :nodes => [{:host => config['host'], :http_port => config['http_port']}])
       end
 
-      # @return [Riak::Bucket] the bucket for the coresponding name
+      # @return [Riak::Bucket] the bucket coresponding to name
       def bucket(name)
         riak.bucket(name)
       end

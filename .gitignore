@@ -10,3 +10,6 @@ pkg
 spec/reports
 tmp
 vendor/bundle
+.yardoc
+_yardoc
+doc/
