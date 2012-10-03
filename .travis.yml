@@ -8,5 +8,6 @@ rvm:
   - rbx-18mode
   - rbx-19mode
 script: bundle exec rake travis
+services: riak
 
 
