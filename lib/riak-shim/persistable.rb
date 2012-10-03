@@ -50,8 +50,10 @@ module Riak
         #
         # Remove all instances of this class from Riak.
         def delete_all
-          bucket.keys.each do |key|
-            bucket.delete(key)
+          bucket.keys do |streamed_keys|
+            streamed_keys.each do |key|
+              bucket.delete(key)
+            end
           end
         end
 
