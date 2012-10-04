@@ -1,4 +1,3 @@
-
 ## The future - mkb
 
 Riak-shim will follow [semantic versioning](http://semver.org) as best I can
@@ -24,5 +23,4 @@ unhappy with the current interface.
 - find less horrible way to deal with index names
 - find less horrible way to deal with key accessor
 - nice error message when can't connect to db
-
-
+- nice error ,essage when back end doesn't support 2i
