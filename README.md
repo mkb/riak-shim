@@ -7,7 +7,9 @@ class names and an appropriate prefix.
 Riak is a database from the good people at Basho.  Check it out:
 http://basho.com/products/riak-overview/
 
-[![Build Status](https://secure.travis-ci.org/mkb/riak-shim.png?branch=master)](http://travis-ci.org/mkb/riak-shim) [![Dependency Status](https://gemnasium.com/mkb/riak-shim.png)](https://gemnasium.com/mkb/riak-shim) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/mkb/riak-shim)
+[![Build Status](https://secure.travis-ci.org/mkb/riak-shim.png?branch=master)](http://travis-ci.org/mkb/riak-shim)
+[![Dependency Status](https://gemnasium.com/mkb/riak-shim.png)](https://gemnasium.com/mkb/riak-shim)
+[![Code Climate](https://codeclimate.com/github/mkb/riak-shim.png)](https://codeclimate.com/github/mkb/riak-shim)
 
 ## Installation
 
