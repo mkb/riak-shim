@@ -33,15 +33,15 @@ class PersistableExampleWithIndex < PersistableExample
   end
 end
 
-def create_test_data(copies)
-  copies.times do |i|
+def create_test_data(quantity)
+  quantity.times do |i|
     p = PersistableExample.new
     p.foo, p.bar, p.baz = i, i, i
     p.save
   end
 end
 
-describe 'persistable' do
+describe Riak::Shim::Persistable do
   let(:persistable) do
     p = PersistableExample.new ; p.foo = 'boo' ; p.bar = 'who' ; p
   end
