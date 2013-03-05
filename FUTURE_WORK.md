@@ -22,7 +22,6 @@ unhappy with the current interface.
 - Keep expanding tests
 - find less horrible way to deal with index names
 - find less horrible way to deal with key accessor
-- nice error message when can't connect to db
-- nice error ,essage when back end doesn't support 2i
+- nice error message when back end doesn't support 2i
 - nice error message when secondary index is missing?
 

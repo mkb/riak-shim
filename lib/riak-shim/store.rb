@@ -14,12 +14,15 @@ module Riak
 
       DEFAULT_CONFIG_LOCATION = 'config/database.yml'
 
-      # Thrown when we can't find a configuration which matches the
+      # Raised when we can't find a configuration which matches the
       # current RACK_ENV
       class NoSettingsForCurrentEnvError < StandardError; end
 
-      # Thrown when the RACK_ENV environment variable is not set
+      # Raised when the RACK_ENV environment variable is not set
       class RackEnvNotSetError < StandardError; end
+
+      # Raised when we can't connect to Riak
+      class ConnectionError < StandardError; end
 
       # @return [Hash] the configuration for our current environment
       def config
@@ -44,8 +47,16 @@ module Riak
       end
 
       def riak
-        @riak ||= Riak::Client.new(:http_backend => :Excon,
+        return @riak if @riak
+
+        @riak = Riak::Client.new(:http_backend => :Excon,
             :nodes => [{:host => config['host'], :http_port => config['http_port']}])
+        unless @riak.ping
+          @riak = nil
+          raise ConnectionError.new("Could not connect to Riak at #{config['host']}:#{config['http_port']}")
+        end
+
+        @riak
       end
 
       # @return [Riak::Bucket] the bucket coresponding to name

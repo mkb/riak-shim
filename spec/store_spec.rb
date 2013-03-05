@@ -4,6 +4,18 @@ require 'riak-shim/store'
 describe Riak::Shim::Store do
   let(:store) { Riak::Shim::Store.new }
 
+  # Port finding code stolen without remorse from realweb
+  PORT_RANGE    = 8000..10000
+  def find_port
+    begin
+      port = random_port
+    end while system("lsof -i tcp:#{port} > /dev/null")
+    port
+  end
+
+  def random_port
+    PORT_RANGE.to_a[rand(PORT_RANGE.to_a.size)]
+  end
 
   describe '#config_location' do
     it 'keeps a path of the database config file' do
@@ -51,6 +63,21 @@ describe Riak::Shim::Store do
 
         it "raises an error" do
           expect { store.config }.to raise_error(Riak::Shim::Store::RackEnvNotSetError)
+        end
+      end
+
+      context 'with no riak at specified coordinates' do
+        before do
+          store.config['host'] = 'localhost'
+          store.config['http_port'] = find_port
+        end
+
+        it 'raises an informative exception' do
+          expect { store.riak }.to raise_error(Riak::Shim::Store::ConnectionError)
+        end
+
+        it 'includes an informative message' do
+          expect { store.riak }.to raise_error(/Could not connect to Riak at/)
         end
       end
     end
