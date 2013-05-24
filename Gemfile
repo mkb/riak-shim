@@ -3,7 +3,6 @@ gemspec
 
 platforms :jruby do
   gem 'jruby-openssl'
-  gem 'json-jruby'
 end
 
 def darwin_only(require_as)
