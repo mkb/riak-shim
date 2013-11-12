@@ -1,3 +1,4 @@
+require 'riak-shim/secondary_index_query.rb'
 
 module Riak
   module Shim
@@ -99,6 +100,11 @@ module Riak
             for_key(key)
           end
         end
+
+      # @return [Riak::Shim::SeconardyIndexQuery] an interface to ducktype index lookups as hash lookups.  i.e. Class['SECONDARY_INDEX']['KEY']
+      def [](val)
+        SecondaryIndexQuery.new(self, val)
+      end
 
         # @return [String] a UUID which we will use as our key
         def gen_key
