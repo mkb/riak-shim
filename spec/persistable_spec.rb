@@ -210,6 +210,31 @@ describe Riak::Shim::Persistable do
     end
   end
 
+  describe '#[]' do
+    before do
+      @indexed = []
+      3.times do |i|
+        indexable = PersistableExampleWithIndex.new
+        indexable.foo = i
+        indexable.bar = 'wombat'
+        indexable.save
+        @indexed << indexable
+      end
+    end
+
+    after do
+      PersistableExampleWithIndex.delete_all
+    end
+
+    it 'returns all items which match indexed value' do
+      PersistableExampleWithIndex['bar_bin']['wombat'].should =~ @indexed
+    end
+
+    it 'returns an empty list when no matches are found' do
+      PersistableExampleWithIndex['bar_bin']['chew'].should be_empty
+    end
+  end
+
   describe '#gen_key' do
     before do
       @keys = []
