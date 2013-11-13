@@ -1,6 +1,6 @@
 $: << './lib'
 require 'riak-shim'
-require 'pry'
+require 'pry' if Gem.available?('pry')
 require 'awesome_print'
 
 ENV['RACK_ENV'] = 'test' unless ENV['RACK_ENV']
