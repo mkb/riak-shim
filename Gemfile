@@ -14,6 +14,9 @@ group :development do
     gem 'guard-yard'
     gem 'yard'
     gem 'redcarpet'
+    gem 'guard'
+    gem 'guard-rspec'
+    gem 'pry'
   end
 end
 
