@@ -1,10 +1,6 @@
 source 'https://rubygems.org'
 gemspec
 
-platforms :jruby do
-  gem 'jruby-openssl'
-end
-
 def darwin_only(require_as)
   RUBY_PLATFORM.include?('darwin') && require_as
 end
