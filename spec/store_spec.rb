@@ -61,8 +61,8 @@ describe Riak::Shim::Store do
           ENV['RACK_ENV'] = nil
         end
 
-        it "raises an error" do
-          expect { store.config }.to raise_error(Riak::Shim::Store::RackEnvNotSetError)
+        it "should assume development" do
+          store.config['bucket_prefix'].should == 'dev_'
         end
       end
 

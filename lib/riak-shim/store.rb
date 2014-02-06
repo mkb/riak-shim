@@ -18,18 +18,15 @@ module Riak
       # current RACK_ENV
       class NoSettingsForCurrentEnvError < StandardError; end
 
-      # Raised when the RACK_ENV environment variable is not set
-      class RackEnvNotSetError < StandardError; end
-
       # Raised when we can't connect to Riak
       class ConnectionError < StandardError; end
 
       # @return [Hash] the configuration for our current environment
       def config
-        env = ENV['RACK_ENV'] or raise RackEnvNotSetError.new
+        env = ENV['RACK_ENV'] || "development"
         @config ||= read_config[env]
         @config or raise NoSettingsForCurrentEnvError.new(
-            "RACK_ENV #{ENV['RACK_ENV']} not specified in #{config_location}.")
+            "RACK_ENV #{env} not specified in #{config_location}.")
       end
 
       # @return [Hash] the entire config, ie the configuration for each environment
