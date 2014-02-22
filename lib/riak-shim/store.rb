@@ -1,5 +1,6 @@
 require 'riak'
 require 'uuidtools'
+require 'erb'
 
 module Riak
   module Shim
@@ -31,7 +32,7 @@ module Riak
 
       # @return [Hash] the entire config, ie the configuration for each environment
       def read_config
-        YAML.load_file(config_location)
+        YAML.load(ERB.new(File.read(config_location)).result)
       end
 
       def config_location
