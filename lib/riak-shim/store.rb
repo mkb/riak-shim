@@ -24,7 +24,16 @@ module Riak
 
       # @return [Hash] the configuration for our current environment
       def config
-        env = ENV['RACK_ENV'] || "development"
+        # detect the existence of Rails, and if present, ask it to determine environment
+        env = nil
+        if defined? Rails
+          env = Rails.env
+        else
+          # Rails not in use, so, we'll try plain Rack instead
+          # (although there are some caveats to this approach, see:
+          # http://www.hezmatt.org/~mpalmer/blog/2013/10/13/rack_env-its-not-for-you)
+          env = ENV['RACK_ENV'] || "development"
+        end
         @config ||= read_config[env]
         @config or raise NoSettingsForCurrentEnvError.new(
             "RACK_ENV #{env} not specified in #{config_location}.")
