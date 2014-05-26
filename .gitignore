@@ -13,3 +13,4 @@ vendor/bundle
 .yardoc
 _yardoc
 doc/
+.vagrant
