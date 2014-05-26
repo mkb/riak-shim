@@ -22,13 +22,3 @@ group :development, :test do
     gem 'growl', :require => darwin_only('growl')
   end
 end
-
-platforms :jruby do
-  gem 'jruby-openssl'
-end
-
-platforms :rbx do
-  gem 'rubysl', '~> 2.0'
-  gem "rubysl-bundler", "~> 2.0"
-  gem 'psych'
-end
