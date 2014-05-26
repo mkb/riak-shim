@@ -12,4 +12,4 @@ gemfile: Gemfile.ci
 script: bundle exec rake travis
 services: riak
 before_install:
-  - 'sudo gem install bundler'
+  - 'gem install bundler'
