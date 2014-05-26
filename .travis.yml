@@ -11,5 +11,8 @@ rvm:
 gemfile: Gemfile.ci
 script: bundle exec rake travis
 services: riak
-before_install:
-  - 'gem install bundler'
+matrix:
+  fast_finish: true
+  allow_failures:
+    - rvm: rbx-2.1.1
+    - rvm: rbx-2.0.0
