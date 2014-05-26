@@ -1,14 +1,15 @@
 language: ruby
 rvm:
-  - 1.9.2
-  - 1.9.3
-  - 2.0.0
   - 2.1
-  - jruby-19mode
-  - rbx-2
-  - rbx-2.1.1
-  - rbx-2.0.0
-gemfile: Gemfile.ci
+#   - 2.0.0
+#   - 1.9.3
+#   - 1.9.2
+#   - rbx-2
+#   - rbx-2.1.1
+#   - rbx-2.0.0
+#   - jruby-19mode
+# gemfile: Gemfile.ci
+bundler_args: --without development
 script: bundle exec rake travis
 services: riak
 matrix:
