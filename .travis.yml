@@ -11,7 +11,6 @@ rvm:
 gemfile: Gemfile.ci
 before_install:
 - 'echo ''gem: --no-ri --no-rdoc'' > ~/.gemrc'
-bundler_args: --without development
 script: bundle exec rake travis
 services: riak
 matrix:
