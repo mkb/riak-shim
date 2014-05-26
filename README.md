@@ -1,8 +1,7 @@
 # Riak Shim
 
-A teeny shim between your code and the riak-client gem.  Reads database
-configuration out of config/database.yml and derives bucket names from your
-class names and an appropriate prefix.
+A tiny shim between you and riak-client. Reads database config and handles a
+little plumbing for marshalling and unmarshalling your models.
 
 Riak is a database from the good people at Basho.  Check it out:
 http://basho.com/products/riak-overview/
@@ -21,7 +20,7 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+Or install directly with:
 
     $ gem install riak-shim
 
@@ -108,13 +107,5 @@ Return value is an Array of instances of your class matching the query.
 
 ## Contributing
 
-For a look at what work is needed (at least according to me), see
-[FUTURE_WORK.md](https://github.com/mkb/riak-shim/blob/master/FUTURE_WORK.md)
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
-
-
+Pull requests are very welcome! If you have trouble with your contribution
+go ahed and open a pull request and I'll be happy to work with you.
