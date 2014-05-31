@@ -19,6 +19,6 @@ end
 group :development, :test do
   if RUBY_PLATFORM.include? 'darwin'
     gem 'rb-fsevent', :require => darwin_only('rb-fsevent')
-    gem 'growl', :require => darwin_only('growl')
+    gem 'ruby_gntp', :require => darwin_only('growl')
   end
 end
