@@ -6,7 +6,7 @@ def darwin_only(require_as)
 end
 
 group :development do
-  platforms :mri_19 do
+  platforms :mri do
     gem 'guard-yard'
     gem 'yard'
     gem 'redcarpet'
